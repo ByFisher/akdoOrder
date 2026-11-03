@@ -72,7 +72,7 @@ export function TableOrderPage({
       );
       const body: unknown = await response.json().catch(() => null);
       if (response.status === 401) {
-        router.replace("/uye?returnTo=%2Fmasa-siparis");
+        router.replace("/uye?returnTo=%2F");
         return;
       }
       if (!response.ok) throw new Error(getError(body, "Masa menüsü açılamadı."));
@@ -118,7 +118,7 @@ export function TableOrderPage({
       });
       const body: unknown = await response.json().catch(() => null);
       if (response.status === 401) {
-        router.replace("/uye?returnTo=%2Fmasa-siparis");
+        router.replace("/uye?returnTo=%2F");
         return;
       }
       if (!response.ok) throw new Error(getError(body, "Sipariş oluşturulamadı."));

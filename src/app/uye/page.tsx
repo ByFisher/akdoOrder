@@ -9,7 +9,7 @@ import type {
 } from "@/lib/member-profile-types";
 import { prisma } from "@/lib/prisma";
 
-export default function MemberPage() {
+export default function MemberPage(props: PageProps<"/uye">) {
   return (
     <Suspense
       fallback={
@@ -18,13 +18,18 @@ export default function MemberPage() {
         </main>
       }
     >
-      <MemberContent />
+      <MemberContent searchParams={props.searchParams} />
     </Suspense>
   );
 }
 
-async function MemberContent() {
+async function MemberContent({
+  searchParams,
+}: {
+  searchParams: PageProps<"/uye">["searchParams"];
+}) {
   await connection();
+  const { returnTo } = await searchParams;
   const member = await getCurrentMember();
   const [transactions, orders, balanceRequests] = member
     ? await Promise.all([
@@ -87,6 +92,11 @@ async function MemberContent() {
               balance: member.balance,
             }
           : null
+      }
+      returnTo={
+        typeof returnTo === "string" && returnTo === "/"
+          ? returnTo
+          : undefined
       }
       balanceRequests={balanceRequests.map((item): MemberBalanceRequestRecord => ({
         ...item,

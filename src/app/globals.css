@@ -72,9 +72,9 @@
   --destructive: #c34638;
   --border: #e3e3da;
   --input: #dedfd6;
-  --ring: #bd9856;
+  --ring: #b08d57;
   --chart-1: #284638;
-  --chart-2: #a67a32;
+  --chart-2: #b08d57;
   --chart-3: #a85e42;
   --chart-4: #758270;
   --chart-5: #d4bd8e;
@@ -86,7 +86,7 @@
   --sidebar-accent: #eaf0e9;
   --sidebar-accent-foreground: #284638;
   --sidebar-border: #e3e3da;
-  --sidebar-ring: #bd9856;
+  --sidebar-ring: #b08d57;
 }
 
 @layer base {
@@ -161,6 +161,7 @@
 .admin-brand-mark {
   box-shadow: 0 8px 26px rgb(11 27 20 / 22%);
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   *,

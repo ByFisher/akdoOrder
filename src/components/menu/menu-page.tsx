@@ -19,7 +19,7 @@ import {
   Wheat,
   X,
 } from "lucide-react";
-import { Avatar as HeroAvatar, Chip } from "@heroui/react";
+import { Chip } from "@heroui/react";
 import { useMemo, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import qrLogo from "../../../img/logo/akdoqr.png";
@@ -243,21 +243,6 @@ export function MenuPage({
                 <span>Üye</span>
               </Link>
             )}
-            <Link
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#34241e] px-2.5 py-2 text-xs font-semibold text-[#fffaf2] transition hover:bg-[#50382d] sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
-              href="/login"
-            >
-              <HeroAvatar
-                aria-hidden="true"
-                className="size-6 rounded-full border border-[#d7b87f] bg-[#f1e7ce] text-[9px] text-[#34241e]"
-                color="default"
-                size="sm"
-                variant="soft"
-              >
-                <HeroAvatar.Fallback>AK</HeroAvatar.Fallback>
-              </HeroAvatar>
-              <span className="hidden sm:inline">Yönetim</span>
-            </Link>
           </div>
         </div>
       </header>
@@ -289,7 +274,7 @@ export function MenuPage({
               </a>
               <Link
                 className="inline-flex h-12 items-center gap-3 rounded-full border border-[#f2e7d4]/45 bg-[#fff9ef]/8 px-6 text-[12px] font-semibold text-[#fff9ef] transition hover:border-[#f2e7d4]/75 hover:bg-[#fff9ef]/15"
-                href={member ? "#menu" : "/masa-siparis"}
+                href={member ? "#menu" : "/uye?returnTo=%2F"}
               >
                 {member ? "Menüden sipariş ver" : "Masadan sipariş ver"}{" "}
                 <ShoppingBag size={16} />

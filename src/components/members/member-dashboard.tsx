@@ -143,7 +143,7 @@ export function MemberDashboard({
           </Link>
           <Link
             className="inline-flex items-center gap-2 text-sm font-semibold text-[#594236] transition hover:text-[#a87943]"
-            href="/masa-siparis"
+            href="/#menu"
           >
             Masadan sipariş ver <ArrowRight size={15} />
           </Link>
@@ -184,7 +184,7 @@ export function MemberDashboard({
           <div className="relative mt-8 flex flex-wrap gap-3 border-t border-[#e8dfd3] pt-5">
             <Link
               className="inline-flex min-h-11 items-center gap-2 bg-[#35251f] px-5 text-xs font-semibold text-[#fff9ef] transition hover:bg-[#51382d]"
-              href="/masa-siparis"
+              href="/#menu"
             >
               Masadan sipariş ver <ArrowUpRight size={15} />
             </Link>
@@ -434,7 +434,7 @@ export function MemberDashboard({
           )}
           <Link
             className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold text-[#755a3e] transition hover:text-[#a87943]"
-            href="/masa-siparis"
+            href="/#menu"
           >
             Yeni sipariş oluştur <ArrowRight size={14} />
           </Link>
