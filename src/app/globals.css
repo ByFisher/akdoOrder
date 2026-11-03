@@ -1,26 +1,174 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@heroui/styles/utilities";
+@import "@heroui/styles/variants";
+@import "@heroui/styles/themes/shared/theme.css";
+@import "@heroui/styles/themes/default/variables.css" layer(theme);
+@import "@heroui/styles/components/avatar.css" layer(components);
+@import "@heroui/styles/components/chip.css" layer(components);
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: Georgia, "Times New Roman", serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #f5f3ed;
+  --foreground: #202c26;
+  --card: #ffffff;
+  --card-foreground: #202c26;
+  --popover: #ffffff;
+  --popover-foreground: #202c26;
+  --primary: #a67a32;
+  --primary-foreground: #ffffff;
+  --secondary: #e8eee8;
+  --secondary-foreground: #284638;
+  --muted: #ecece5;
+  --muted-foreground: #747970;
+  --accent: #eaf0e9;
+  --accent-foreground: #284638;
+  --destructive: #c34638;
+  --border: #e3e3da;
+  --input: #dedfd6;
+  --ring: #bd9856;
+  --chart-1: #284638;
+  --chart-2: #a67a32;
+  --chart-3: #a85e42;
+  --chart-4: #758270;
+  --chart-5: #d4bd8e;
+  --radius: 1rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #202c26;
+  --sidebar-primary: #284638;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eaf0e9;
+  --sidebar-accent-foreground: #284638;
+  --sidebar-border: #e3e3da;
+  --sidebar-ring: #bd9856;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    @apply font-sans;
+    background: #f5f3ed;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    font-feature-settings: "ss01" on;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: #e7d2a9;
+    color: #30291f;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-editorial {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: 500;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-hero {
+  background-color: #34241e;
+}
+
+.menu-hero-image {
+  background-image:
+    linear-gradient(90deg, #34241e 0%, rgb(52 36 30 / 35%) 34%, rgb(52 36 30 / 0%) 100%),
+    url("https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1800&q=85");
+  background-position: center, center 54%;
+  background-size: cover;
+}
+
+.product-photo {
+  background: linear-gradient(135deg, #f1e7d8, #d6c1a5);
+}
+
+.gold-divider {
+  background: linear-gradient(90deg, transparent, #c9a765 18%, #e8d8b5 50%, #c9a765 82%, transparent);
+  height: 1px;
+}
+
+.admin-sidebar {
+  background:
+    radial-gradient(ellipse at 10% 12%, rgb(255 255 255 / 5%), transparent 35%),
+    #203d31;
+}
+
+.admin-brand-mark {
+  box-shadow: 0 8px 26px rgb(11 27 20 / 22%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

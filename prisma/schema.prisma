@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String
+  icon      String    @default("✦")
+  isActive  Boolean   @default(true)
+  sortOrder Int       @default(0)
+  branchId  String    @default("default-branch")
+  branch    Branch    @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([branchId, slug])
+  @@index([branchId, isActive, sortOrder])
+}
+
+model Branch {
+  id         String        @id @default(cuid())
+  name       String
+  slug       String        @unique
+  city       String        @default("")
+  district   String        @default("")
+  address    String        @default("")
+  isActive   Boolean       @default(true)
+  isDefault  Boolean       @default(false)
+  categories Category[]
+  tables     DiningTable[]
+  orders     DiningOrder[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([isActive, name])
+}
+
+model DiningTable {
+  id        String        @id @default(cuid())
+  name      String
+  code      String        @unique
+  isActive  Boolean       @default(true)
+  branchId  String
+  branch    Branch        @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  orders    DiningOrder[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([branchId, name])
+  @@index([branchId, isActive])
+}
+
+model DiningOrder {
+  id            String                     @id @default(cuid())
+  trackingToken String                     @unique
+  status        String                     @default("PENDING")
+  total         Int
+  memberId      String?
+  member        Member?                    @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  branchId      String
+  branch        Branch                     @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  tableId       String
+  table         DiningTable                @relation(fields: [tableId], references: [id], onDelete: Restrict)
+  paymentStatus String                     @default("UNPAID")
+  paymentMethod String?
+  paidAt        DateTime?
+  paidBy        String?
+  items         DiningOrderItem[]
+  transactions  MemberBalanceTransaction[]
+  createdAt     DateTime                   @default(now())
+  updatedAt     DateTime                   @updatedAt
+
+  @@index([branchId, status, createdAt])
+  @@index([tableId, createdAt])
+}
+
+model Member {
+  id              String                     @id @default(cuid())
+  memberNumber    String                     @unique
+  firstName       String
+  lastName        String
+  phone           String?
+  passwordHash    String
+  balance         Int                        @default(0)
+  isActive        Boolean                    @default(true)
+  orders          DiningOrder[]
+  transactions    MemberBalanceTransaction[]
+  balanceRequests MemberBalanceRequest[]
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+
+  @@index([lastName, firstName])
+  @@index([phone])
+}
+
+model MemberBalanceTransaction {
+  id               String                @id @default(cuid())
+  amount           Int
+  description      String
+  memberId         String
+  member           Member                @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  orderId          String?
+  order            DiningOrder?          @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  balanceRequestId String?               @unique
+  balanceRequest   MemberBalanceRequest? @relation(fields: [balanceRequestId], references: [id], onDelete: Restrict)
+  createdAt        DateTime              @default(now())
+
+  @@index([memberId, createdAt])
+  @@index([orderId])
+}
+
+model MemberBalanceRequest {
+  id              String                    @id @default(cuid())
+  amount          Int
+  status          String                    @default("PENDING")
+  memberId        String
+  member          Member                    @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  pendingMemberId String?                   @unique
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  reviewNote      String                    @default("")
+  transaction     MemberBalanceTransaction?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  @@index([memberId, status, createdAt])
+  @@index([status, createdAt])
+}
+
+model StaffAccount {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([role, isActive])
+}
+
+model DiningOrderItem {
+  id       String      @id @default(cuid())
+  name     String
+  price    Int
+  quantity Int
+  orderId  String
+  order    DiningOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  price       Int
+  imageUrl    String   @default("")
+  allergens   String   @default("")
+  stock       Int      @default(20)
+  isActive    Boolean  @default(true)
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([categoryId, isActive, sortOrder])
+  @@index([name])
+}
