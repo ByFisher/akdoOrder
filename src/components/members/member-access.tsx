@@ -52,6 +52,7 @@ export function MemberAccess({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [createdMemberNumber, setCreatedMemberNumber] = useState("");
+  const [createdUsername, setCreatedUsername] = useState("");
 
   async function logout() {
     setBusy(true);
@@ -77,14 +78,16 @@ export function MemberAccess({
     setBusy(true);
     setError("");
     setCreatedMemberNumber("");
+    setCreatedUsername("");
     const formData = new FormData(event.currentTarget);
     const data =
       mode === "login"
         ? {
-            memberNumber: formData.get("memberNumber"),
+            username: formData.get("username"),
             password: formData.get("password"),
           }
         : {
+            username: formData.get("username"),
             firstName: formData.get("firstName"),
             lastName: formData.get("lastName"),
             phone: formData.get("phone"),
@@ -115,6 +118,7 @@ export function MemberAccess({
           throw new Error("Üyelik oluşturuldu ancak üye numarası alınamadı.");
         }
         setCreatedMemberNumber(body.member.memberNumber);
+        setCreatedUsername(String(formData.get("username") || ""));
       }
       router.push(returnTo || "/");
       router.refresh();
@@ -176,6 +180,7 @@ export function MemberAccess({
                   setMode(nextMode);
                   setError("");
                   setCreatedMemberNumber("");
+                  setCreatedUsername("");
                 }}
                 type="button"
               >
@@ -187,6 +192,12 @@ export function MemberAccess({
             <p className="mt-4 rounded-xl bg-[#e9eee7] px-4 py-3 text-sm text-[#31513e]">
               Üyeliğiniz oluşturuldu. Üye numaranız:{" "}
               <strong className="font-mono tracking-wider">{createdMemberNumber}</strong>
+              {createdUsername && (
+                <>
+                  {" "}· Kullanıcı adınız:{" "}
+                  <strong>{createdUsername}</strong>
+                </>
+              )}
             </p>
           )}
           {error && (
@@ -206,20 +217,29 @@ export function MemberAccess({
                   <Input className="h-11 rounded-xl border-[#dedfd5] bg-white px-4" maxLength={80} name="lastName" required />
                 </label>
                 <label className="block space-y-2 text-sm font-medium text-[#405247]">
+                  Kullanıcı adı (en az 3 karakter)
+                  <Input
+                    autoComplete="username"
+                    className="h-11 rounded-xl border-[#dedfd5] bg-white px-4"
+                    maxLength={80}
+                    minLength={3}
+                    name="username"
+                    required
+                  />
+                </label>
+                <label className="block space-y-2 text-sm font-medium text-[#405247]">
                   Telefon numarası <span className="text-[#8b9187]">(isteğe bağlı)</span>
                   <Input className="h-11 rounded-xl border-[#dedfd5] bg-white px-4" maxLength={30} name="phone" type="tel" />
                 </label>
               </>
             ) : (
               <label className="block space-y-2 text-sm font-medium text-[#405247]">
-                8 haneli üye numarası
+                Kullanıcı adı
                 <Input
                   autoComplete="username"
-                  className="h-11 rounded-xl border-[#dedfd5] bg-white px-4 font-mono tracking-widest"
-                  inputMode="numeric"
-                  maxLength={8}
-                  name="memberNumber"
-                  pattern="[0-9]{8}"
+                  className="h-11 rounded-xl border-[#dedfd5] bg-white px-4"
+                  maxLength={80}
+                  name="username"
                   required
                 />
               </label>

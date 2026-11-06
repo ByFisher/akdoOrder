@@ -10,6 +10,8 @@ export async function GET(
     select: {
       id: true,
       status: true,
+      paymentStatus: true,
+      paymentMethod: true,
       total: true,
       createdAt: true,
       table: { select: { name: true } },

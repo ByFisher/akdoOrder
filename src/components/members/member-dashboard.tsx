@@ -165,6 +165,15 @@ export function MemberDashboard({
                 Merhaba, {member.firstName}
               </h1>
               <p className="mt-2 text-xs text-[#807468]">
+                {member.username && (
+                  <>
+                    Kullanıcı adınız{" "}
+                    <strong className="font-mono tracking-wider text-[#594236]">
+                      {member.username}
+                    </strong>
+                    {" · "}
+                  </>
+                )}
                 Üye numaranız{" "}
                 <strong className="font-mono tracking-wider text-[#594236]">
                   {member.memberNumber}

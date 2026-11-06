@@ -9,46 +9,62 @@ import {
 import { prisma } from "@/lib/prisma";
 
 const loginSchema = z.object({
-  memberNumber: z.string().regex(/^\d{8}$/),
+  username: z.string().trim().min(1).max(80).optional(),
+  memberNumber: z.string().regex(/^\d{8}$/).optional(),
   password: z.string().min(1).max(200),
-});
+}).refine((value) => Boolean(value.username || value.memberNumber));
 
 export async function POST(request: Request) {
   const body: unknown = await request.json().catch(() => null);
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
     return Response.json(
-      { error: "8 haneli üye numarası ve parolanızı girin." },
+      { error: "Kullanıcı adı ve parolanızı girin." },
       { status: 400 },
     );
   }
 
-  const member = await prisma.member.findUnique({
-    where: { memberNumber: parsed.data.memberNumber },
-  });
+  const username = parsed.data.username?.toLocaleLowerCase("tr-TR");
+  const member = username
+    ? await prisma.member.findUnique({ where: { username } })
+    : null;
+  const legacyMemberNumber =
+    parsed.data.memberNumber ??
+    (username && /^\d{8}$/.test(username) ? username : undefined);
+  const legacyMember =
+    member || !legacyMemberNumber
+      ? null
+      : await prisma.member.findUnique({
+          where: { memberNumber: legacyMemberNumber },
+        });
+  const authenticatedMember = member ?? legacyMember;
   if (
-    !member ||
-    !member.isActive ||
-    !(await verifyMemberPassword(parsed.data.password, member.passwordHash))
+    !authenticatedMember ||
+    !authenticatedMember.isActive ||
+    !(await verifyMemberPassword(
+      parsed.data.password,
+      authenticatedMember.passwordHash,
+    ))
   ) {
     return Response.json(
-      { error: "Üye numarası veya parola hatalı." },
+      { error: "Kullanıcı adı veya parola hatalı." },
       { status: 401 },
     );
   }
 
   const response = NextResponse.json({
     member: {
-      id: member.id,
-      memberNumber: member.memberNumber,
-      firstName: member.firstName,
-      lastName: member.lastName,
-      balance: member.balance,
+      id: authenticatedMember.id,
+      memberNumber: authenticatedMember.memberNumber,
+      username: authenticatedMember.username,
+      firstName: authenticatedMember.firstName,
+      lastName: authenticatedMember.lastName,
+      balance: authenticatedMember.balance,
     },
   });
   response.cookies.set(
     MEMBER_COOKIE,
-    createMemberSession(member.id),
+    createMemberSession(authenticatedMember.id),
     memberCookieOptions(),
   );
   return response;

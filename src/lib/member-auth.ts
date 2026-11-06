@@ -91,6 +91,7 @@ export async function getCurrentMember() {
     select: {
       id: true,
       memberNumber: true,
+      username: true,
       firstName: true,
       lastName: true,
       balance: true,

@@ -74,6 +74,7 @@ model DiningOrder {
   paidBy        String?
   items         DiningOrderItem[]
   transactions  MemberBalanceTransaction[]
+  notifications MemberNotification[]
   createdAt     DateTime                   @default(now())
   updatedAt     DateTime                   @updatedAt
 
@@ -84,13 +85,17 @@ model DiningOrder {
 model Member {
   id              String                     @id @default(cuid())
   memberNumber    String                     @unique
+  username        String?                    @unique
   firstName       String
   lastName        String
   phone           String?
   passwordHash    String
   balance         Int                        @default(0)
   isActive        Boolean                    @default(true)
+  privacyNoticeVersion String?
+  privacyNoticeReadAt DateTime?
   orders          DiningOrder[]
+  notifications   MemberNotification[]
   transactions    MemberBalanceTransaction[]
   balanceRequests MemberBalanceRequest[]
   createdAt       DateTime                   @default(now())
@@ -154,6 +159,22 @@ model DiningOrderItem {
   orderId  String
   order    DiningOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
+  @@index([orderId])
+}
+
+model MemberNotification {
+  id        String       @id @default(cuid())
+  title     String
+  body      String
+  type      String       @default("ANNOUNCEMENT")
+  readAt    DateTime?
+  memberId  String
+  member    Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  orderId   String?
+  order     DiningOrder? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  createdAt DateTime     @default(now())
+
+  @@index([memberId, readAt, createdAt])
   @@index([orderId])
 }
 

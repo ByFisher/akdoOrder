@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: akdo-order-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_SESSION_SECRET
+        sync: false
+      - key: CHEF_USERNAME
+        sync: false
+      - key: CHEF_PASSWORD
+        sync: false
+      - key: WAITER_USERNAME
+        sync: false
+      - key: WAITER_PASSWORD
+        sync: false

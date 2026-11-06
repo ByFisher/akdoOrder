@@ -25,6 +25,7 @@ export async function GET() {
     select: {
       id: true,
       memberNumber: true,
+      username: true,
       firstName: true,
       lastName: true,
       phone: true,
@@ -80,6 +81,7 @@ export async function POST(request: Request) {
           select: {
             id: true,
             memberNumber: true,
+            username: true,
             firstName: true,
             lastName: true,
             phone: true,

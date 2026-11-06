@@ -1,5 +1,6 @@
 export interface MemberProfile {
   memberNumber: string;
+  username?: string | null;
   firstName: string;
   lastName: string;
   balance: number;

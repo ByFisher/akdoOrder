@@ -96,6 +96,7 @@ export async function AdminContent({
       select: {
         id: true,
         memberNumber: true,
+        username: true,
         firstName: true,
         lastName: true,
         phone: true,

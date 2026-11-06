@@ -168,6 +168,26 @@ npm run lint
 npm run build
 ```
 
-Bu başlangıç projesi yerel geliştirme için SQLite kullanır. Vercel gibi sunucusuz
-ortamlarda yerel SQLite dosyası kalıcı/ortak bir veritabanı değildir; gerçek
-dağıtım öncesinde Prisma şemasını kalıcı bir PostgreSQL sağlayıcısına taşıyın.
+## Render demo dağıtımı
+
+Depoda Render Free web servisi için `render.yaml` blueprint'i bulunur. Render'da
+bu depoyu bağlayıp istenen ortam değişkenlerini panelden girin. PostgreSQL
+veritabanını ayrı oluşturun (örneğin Supabase Free) ve session-pooler bağlantı
+adresini `DATABASE_URL` olarak kullanın. Veritabanı parolasını ve uygulama
+gizli anahtarlarını yalnızca servis sağlayıcısının secret alanlarına girin;
+depo dosyalarına eklemeyin.
+
+Her dağıtım derlemesinde Render `prisma migrate deploy` komutunu çalıştırır;
+`DATABASE_URL` değişkeni derleme başlamadan önce tanımlanmalıdır. Seed
+otomatik çalışmaz. Yeni ve boş bir demo veritabanını ilk kez hazırlamak için
+güvenilir bir ortamda bu veritabanına bağlanıp `npm run db:seed` komutunu bir
+kez çalıştırın. Seed yalnızca şube, masa, kategori ve örnek ürün ekler; varsayılan
+parolalı hesap oluşturmaz. Erişim vermeden önce `ADMIN_*`, `CHEF_*` ve
+`WAITER_*` değişkenlerine benzersiz kimlik bilgileri girin.
+
+Bu ücretsiz kurulum yalnızca demo/test içindir. Render Free servisleri uykuya
+geçebilir ve yerel disk kalıcı değildir. `public/uploads` altına yüklenen
+görseller yeniden başlatma veya dağıtım sonrasında kaybolabilir; yüklemelere
+güvenmeden önce kalıcı nesne depolaması kullanın. Supabase Free projeleri de
+etkinlik olmadığında duraklatılabilir. Gerçek müşteri, bakiye veya sipariş
+verilerini demo ortamına kopyalamayın.

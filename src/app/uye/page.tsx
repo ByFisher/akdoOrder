@@ -87,6 +87,7 @@ async function MemberContent({
         member
           ? {
               memberNumber: member.memberNumber,
+              username: member.username,
               firstName: member.firstName,
               lastName: member.lastName,
               balance: member.balance,

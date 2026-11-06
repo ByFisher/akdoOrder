@@ -19,6 +19,7 @@ interface MemberTransaction {
 interface MemberRecord {
   id: string;
   memberNumber: string;
+  username: string | null;
   firstName: string;
   lastName: string;
   phone: string | null;
@@ -288,6 +289,7 @@ function MemberCard({ member }: { member: MemberRecord }) {
             {member.memberNumber}
           </p>
           <p className="mt-1 text-xs text-[#737a70]">
+            {member.username ? `@${member.username} · ` : ""}
             {member.phone || "Telefon eklenmemiş"} ·{" "}
             {new Date(member.createdAt).toLocaleDateString("tr-TR")}
           </p>

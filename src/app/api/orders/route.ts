@@ -110,6 +110,15 @@ export async function POST(request: Request) {
         description: `Masadan sipariş · ${table.name}`,
       },
     });
+    await transaction.memberNotification.create({
+      data: {
+        memberId: currentMember.id,
+        orderId: createdOrder.id,
+        type: "ORDER_STATUS",
+        title: "Siparişiniz alındı",
+        body: `${table.name} için siparişiniz hazırlanmak üzere sıraya alındı.`,
+      },
+    });
     return createdOrder;
   });
   if (!order) {
