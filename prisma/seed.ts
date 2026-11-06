@@ -3,7 +3,7 @@ import { prisma } from "../src/lib/prisma";
 async function main() {
   const branch = await prisma.branch.upsert({
     where: { slug: "merkez" },
-    update: { name: "Merkez Şube", isActive: true },
+    update: {},
     create: {
       name: "Merkez Şube",
       slug: "merkez",
@@ -17,7 +17,7 @@ async function main() {
 
   await prisma.diningTable.upsert({
     where: { code: "123456" },
-    update: { name: "Masa 1", isActive: true, branchId: branch.id },
+    update: {},
     create: {
       name: "Masa 1",
       code: "123456",
@@ -30,7 +30,7 @@ async function main() {
     where: {
       branchId_slug: { branchId: branch.id, slug: "ana-yemekler" },
     },
-    update: { name: "Ana Yemekler", isActive: true },
+    update: {},
     create: {
       name: "Ana Yemekler",
       slug: "ana-yemekler",
@@ -43,7 +43,7 @@ async function main() {
 
   await prisma.product.upsert({
     where: { id: "demo-adana-kebap" },
-    update: { isActive: true },
+    update: {},
     create: {
       id: "demo-adana-kebap",
       name: "Adana Kebap",

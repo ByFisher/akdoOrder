@@ -178,12 +178,12 @@ gizli anahtarlarını yalnızca servis sağlayıcısının secret alanlarına gi
 depo dosyalarına eklemeyin.
 
 Her dağıtım derlemesinde Render `prisma migrate deploy` komutunu çalıştırır;
-`DATABASE_URL` değişkeni derleme başlamadan önce tanımlanmalıdır. Seed
-otomatik çalışmaz. Yeni ve boş bir demo veritabanını ilk kez hazırlamak için
-güvenilir bir ortamda bu veritabanına bağlanıp `npm run db:seed` komutunu bir
-kez çalıştırın. Seed yalnızca şube, masa, kategori ve örnek ürün ekler; varsayılan
-parolalı hesap oluşturmaz. Erişim vermeden önce `ADMIN_*`, `CHEF_*` ve
-`WAITER_*` değişkenlerine benzersiz kimlik bilgileri girin.
+`DATABASE_URL` değişkeni derleme başlamadan önce tanımlanmalıdır. Render
+`prisma migrate deploy` ve güvenli, tekrarlanabilir demo seed'ini derleme
+sırasında çalıştırır. Seed yalnızca şube, masa, kategori ve örnek ürün ekler;
+varsayılan parolalı hesap oluşturmaz ve mevcut kayıtları ezmez. Erişim vermeden
+önce `ADMIN_*`, `CHEF_*` ve `WAITER_*` değişkenlerine benzersiz kimlik
+bilgileri girin.
 
 Bu ücretsiz kurulum yalnızca demo/test içindir. Render Free servisleri uykuya
 geçebilir ve yerel disk kalıcı değildir. `public/uploads` altına yüklenen
